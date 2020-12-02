@@ -44,7 +44,40 @@ class RBtree(Node):
         node.left.red = False
         node.right = Node(None)
         node.right.red = False
-        #self._fixTree(node)
+        self.fixTree(node)
+
+
+    def fixTree(self, node):
+        while node.parent is not None and node.parent.red == True:
+            if node.parent == node.parent.parent.left:
+                uncle = node.parent.parent.right
+                if uncle.red:
+                    node.parent.red = False
+                    uncle.red = False
+                    node.parent.parent.red = True
+                    node = node.parent.parent
+                else:
+                    if node == node.parent.right:
+                        node = node.parent
+                        self.left_rotate(node)
+                    node.parent.red = False
+                    node.parent.parent.red = True
+                    self.right_rotate(node.parent.parent)
+            else:
+                uncle = node.parent.parent.left
+                if uncle.red:
+                    node.parent.red = False
+                    uncle.red = False
+                    node.parent.parent.red = True
+                    node = node.parent.parent
+                else:
+                    if node == node.parent.left:
+                        node = node.parent
+                        self.right_rotate(node)
+                    node.parent.red = False
+                    node.parent.parent.red = True
+                    self.left_rotate(node.parent.parent)
+        self.root.red = False
 
     def left_rotate(self, node):
         sibling = node.right
@@ -77,3 +110,15 @@ class RBtree(Node):
                 node.parent.left = sibling
         sibling.right = node
         node.parent = sibling
+
+    def search(self, key):
+        if self.root is not None:
+            currentNode = self.root
+            while currentNode.key != None and key != currentNode.key:
+                if key < currentNode.key:
+                    currentNode = currentNode.left
+                else:
+                    currentNode = currentNode.right
+            return currentNode
+        else:
+            print("Невозможно найти элемент: дерево пустое")
