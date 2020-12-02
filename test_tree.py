@@ -56,3 +56,26 @@ class RbTreeTests(unittest.TestCase):
         self.assertEqual(rb_tree.search(6), node_6)
         self.assertEqual(rb_tree.search(9), node_9)
         self.assertEqual(rb_tree.search(15), node_15)
+
+    #вставка узлов дерева
+    def test_Insert(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        tree.insert(10)
+
+        self.assertEqual(tree.root.red, False)
+        self.assertEqual(tree.search(15).red, False)
+        self.assertEqual(tree.search(25).red, False)
+        tree.insert(17)
+        tree.insert(8)
+        self.assertEqual(tree.search(15).red, True)
+        self.assertEqual(tree.search(10).red, False)
+        self.assertEqual(tree.search(17).red, False)
+        self.assertEqual(tree.search(8).red, True)
+        tree.insert(9)
+        self.assertEqual(tree.search(10).red, True)
+        self.assertEqual(tree.search(8).red, True)
+        self.assertEqual(tree.search(9).left.key, 8)
+
