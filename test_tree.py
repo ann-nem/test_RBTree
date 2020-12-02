@@ -79,3 +79,31 @@ class RbTreeTests(unittest.TestCase):
         self.assertEqual(tree.search(8).red, True)
         self.assertEqual(tree.search(9).left.key, 8)
 
+    #нахождение следующего узла дерева (правый сын)
+    def test_Next(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        node1 = tree.root.right
+        tree.insert(10)
+        tree.insert(30)
+        node2 = node1.right
+
+        self.assertIsNone(tree.FindNext(15))
+        self.assertEqual(tree.FindNext(20), node1)
+        self.assertEqual(tree.FindNext(25), node2)
+
+    #нахождение пл узла дерева (левый сын)
+    def test_Prev(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        node1 = tree.root.left
+        tree.insert(10)
+        node2 = node1.left
+
+        self.assertIsNone(tree.FindPrev(25))
+        self.assertEqual(tree.FindPrev(20), node1)
+        self.assertEqual(tree.FindPrev(15), node2)

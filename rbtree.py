@@ -122,3 +122,25 @@ class RBtree(Node):
             return currentNode
         else:
             print("Невозможно найти элемент: дерево пустое")
+
+    def FindNext(self, x):
+        current = self.search(x)
+        if current:
+            current = current.right
+            if current.key is not None:
+                while (current.left.key is not None):
+                    current = current.left
+                return current
+        else:
+            print('Данный элемент отсутсвует в дереве')
+
+    def FindPrev(self, x):
+        current = self.search(x)
+        if current:
+            current = current.left
+            if current.key is not None:
+                while (current.right.key is not None):
+                    current = current.right
+                return current
+        else:
+            print('Данный элемент отсутствует в дереве')
