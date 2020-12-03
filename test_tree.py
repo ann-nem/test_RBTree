@@ -160,4 +160,17 @@ class RbTreeTests(unittest.TestCase):
         tree.delete_left_node_onlyLeftChildren(node)
         self.assertEqual(tree.root.left.key, 14)
 
+    def test_delete_left_node_bothChildren(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        tree.insert(14)
+        tree.insert(18)
+        node = tree.root.left
+        tree.delete_left_node_onlyLeftChildren(node)
+        self.assertEqual(tree.root.left.key, 14)
+
+
+
 

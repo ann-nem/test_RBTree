@@ -182,6 +182,8 @@ class RBtree(Node):
             self.delete_left_node_onlyRightChildren(currentNode)
         elif currentNode.left.key is not None and currentNode.right.key is None:
             self.delete_left_node_onlyLeftChildren(currentNode)
+        else:
+            self.delete_left_node_bothChildren(currentNode)
 
     def delete_left_node_noChildren(self, currentNode):
         currentNode.parent.left = currentNode.left
@@ -239,4 +241,16 @@ class RBtree(Node):
             if currentNode.left.red:
                 currentNode.left.red = False
 
+    def delete_left_node_bothChildren(self, currentNode):
+        next = self.FindNext(currentNode.key)
+        currentNode.parent.left = next
+        next.parent = currentNode.parent
+        currentNode.left.parent = next
+        next.left = currentNode.left
+        if next.red is False:
+            if next.right.red:
+                next.right.red = False
+                next.red = True
+        else:
+            next.red = False
 
