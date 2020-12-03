@@ -147,16 +147,17 @@ class RBtree(Node):
 
     def deleteNode(self, key):
         currentNode = self.search(key)
-        if currentNode is self.root:
-            self.delete_root_node(currentNode)
-        else:
+        if currentNode is not self.root:
             if currentNode.key is not None:
                 if currentNode == currentNode.parent.left:
                     self.delete_left_node(currentNode)
-                elif currentNode.left.key is None and currentNode.right.key is not None:
-                    self.delete_left_node_onlyRightChildren(currentNode)
+
+                else:
+                    self.delete_right_node(currentNode)
             else:
                 print("Невозможно удалить: данный узел не существует")
+        else:
+            self.delete_root_node(currentNode)
 
     def delete_root_node(self, currentNode):
         if currentNode.left.key is None and currentNode.right.key is None:
@@ -253,4 +254,33 @@ class RBtree(Node):
                 next.red = True
         else:
             next.red = False
+
+    def delete_right_node(self, currentNode):
+        if currentNode.left.key is None and currentNode.right.key is None:
+            self.delete_right_node_noChildren(currentNode)
+
+    def delete_right_node_noChildren(self, currentNode):
+        currentNode.parent.right = currentNode.right
+        currentNode.right.parent = currentNode.parent
+        if currentNode.red is False:
+            brother = currentNode.parent.left
+            print(brother.key)
+            if brother.red == False:
+                if brother.left.red and brother.right.red:
+                    brother.right.red = False
+                    self.right_rotate(brother.parent)
+                elif brother.right.red and brother.left.red == False:
+                    brother.right.red = False
+                    brother.red = True
+                    self.left_rotate(brother)
+                    self.right_rotate(brother.parent.parent)
+                elif brother.left.red and brother.right.red == False:
+                    brother.left.red = False
+                    self.right_rotate(brother.parent)
+
+            else:
+                if brother.left.key is not None and brother.right.key is not None:
+                    brother.red = False
+                    brother.right.red = True
+                    self.right_rotate(brother.parent)
 
