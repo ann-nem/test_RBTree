@@ -262,6 +262,8 @@ class RBtree(Node):
             self.delete_right_node_onlyRightChildren(currentNode)
         elif currentNode.left.key is not None and currentNode.right.key is None:
             self.delete_right_node_onlyLeftChildren(currentNode)
+        else:
+            self.delete_right_node_bothChildren(currentNode)
 
     def delete_right_node_noChildren(self, currentNode):
         currentNode.parent.right = currentNode.right
@@ -301,3 +303,39 @@ class RBtree(Node):
         if currentNode.red is False:
             if currentNode.left.red:
                 currentNode.left.red = False
+
+    def delete_right_node_bothChildren(self, currentNode):
+        next = self.FindNext(currentNode.key)
+        currentNode.parent.right = next
+        next.parent = currentNode.parent
+        currentNode.left.parent = next
+        next.left = currentNode.left
+        print(next.key)
+
+        if next.red is False:
+            if next.right.red:
+                next.right.red = False
+                next.red = True
+        else:
+            next.red = False
+
+    #удаление узлов дерева
+    def test_Delete(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        tree.insert(23)
+        tree.insert(27)
+        self.assertEqual(tree.root.red, False)
+        self.assertEqual(tree.root.right.key, 25)
+        self.assertEqual(tree.root.right.left.key, 23)
+        self.assertEquals(tree.root.right.left.red, True)
+        tree.deleteNode(25)
+        self.assertEqual(tree.root.key, 20)
+        self.assertEqual(tree.root.right.key, 27)
+        self.assertEqual(tree.root.right.red, False)
+        self.assertEqual(tree.root.right.right.key, None)
+        self.assertEqual(tree.root.right.left.key, 23)
+        self.assertEqual(tree.root.right.left.red, True)
+
