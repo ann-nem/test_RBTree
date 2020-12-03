@@ -65,18 +65,18 @@ class RbTreeTests(unittest.TestCase):
         tree.insert(25)
         tree.insert(10)
 
-        self.assertEqual(tree.root.red, False)
-        self.assertEqual(tree.search(15).red, False)
-        self.assertEqual(tree.search(25).red, False)
+        self.assertFalse(tree.root.red)
+        self.assertFalse(tree.search(15).red)
+        self.assertFalse(tree.search(25).red)
         tree.insert(17)
         tree.insert(8)
-        self.assertEqual(tree.search(15).red, True)
-        self.assertEqual(tree.search(10).red, False)
-        self.assertEqual(tree.search(17).red, False)
-        self.assertEqual(tree.search(8).red, True)
+        self.assertTrue(tree.search(15).red)
+        self.assertFalse(tree.search(10).red)
+        self.assertFalse(tree.search(17).red)
+        self.assertTrue(tree.search(8).red)
         tree.insert(9)
-        self.assertEqual(tree.search(10).red, True)
-        self.assertEqual(tree.search(8).red, True)
+        self.assertTrue(tree.search(10).red)
+        self.assertTrue(tree.search(8).red)
         self.assertEqual(tree.search(9).left.key, 8)
 
     #нахождение следующего узла дерева (правый сын)
@@ -130,3 +130,14 @@ class RbTreeTests(unittest.TestCase):
 
         self.assertEqual(rb_tree.root.key, 8)
         self.assertEqual(rb_tree.root.left.key, 3)
+
+    def test_delete_left_node_noChildren(self):
+        tree = RBtree()
+        tree.insert(20)
+        tree.insert(15)
+        tree.insert(25)
+        node = tree.root.left
+        tree.delete_left_node_noChildren(node)
+        self.assertIsNone(tree.root.left.key)
+
+
