@@ -107,3 +107,26 @@ class RbTreeTests(unittest.TestCase):
         self.assertIsNone(tree.FindPrev(25))
         self.assertEqual(tree.FindPrev(20), node1)
         self.assertEqual(tree.FindPrev(15), node2)
+
+    #удаление корня дерева
+    def test_root_delete(self):
+        rb_tree = RBtree()
+        root = Node(5)
+        root.red = False
+        left_child = Node(3)
+        left_child.red = True
+        left_child.parent = root
+        left_child.left = Node(None)
+        left_child.right = Node(None)
+        right_child = Node(8)
+        right_child.red = True
+        right_child.parent = root
+        right_child.left = Node(None)
+        right_child.right = Node(None)
+        root.left = left_child
+        root.right = right_child
+        rb_tree.root = root
+        rb_tree.deleteNode(5)
+
+        self.assertEqual(rb_tree.root.key, 8)
+        self.assertEqual(rb_tree.root.left.key, 3)

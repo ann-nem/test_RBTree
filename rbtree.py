@@ -144,3 +144,25 @@ class RBtree(Node):
                 return current
         else:
             print('Данный элемент отсутствует в дереве')
+
+    def deleteNode(self, key):
+        currentNode = self.search(key)
+        if currentNode is self.root:
+            self.delete_root_node(currentNode)
+
+    def delete_root_node(self, currentNode):
+        if currentNode.left.key is None and currentNode.right.key is None:
+            self.root = None
+        elif currentNode.left.key is None and currentNode.right.key is not None:
+            self.root = currentNode.right
+            currentNode.right.parent = None
+        elif currentNode.left.key is not None and currentNode.right.key is None:
+            self.root = currentNode.left
+            currentNode.left.parent = None
+        else:
+            next = self.FindNext(currentNode.key)
+            next.parent = None
+            self.root = next
+            currentNode.left.parent = self.root
+            self.root.left = currentNode.left
+        self.root.red = False
