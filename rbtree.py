@@ -153,6 +153,8 @@ class RBtree(Node):
             if currentNode.key is not None:
                 if currentNode == currentNode.parent.left:
                     self.delete_left_node(currentNode)
+                elif currentNode.left.key is None and currentNode.right.key is not None:
+                    self.delete_left_node_onlyRightChildren(currentNode)
             else:
                 print("Невозможно удалить: данный узел не существует")
 
@@ -176,6 +178,10 @@ class RBtree(Node):
     def delete_left_node(self, currentNode):
         if currentNode.left.key is None and currentNode.right.key is None:
             self.delete_left_node_noChildren(currentNode)
+        elif currentNode.left.key is None and currentNode.right.key is not None:
+            self.delete_left_node_onlyRightChildren(currentNode)
+        elif currentNode.left.key is not None and currentNode.right.key is None:
+            self.delete_left_node_onlyLeftChildren(currentNode)
 
     def delete_left_node_noChildren(self, currentNode):
         currentNode.parent.left = currentNode.left
@@ -199,5 +205,38 @@ class RBtree(Node):
                     brother.red = False
                     brother.left.red = True
                     self.left_rotate(brother.parent)
+
+    def delete_left_node_onlyRightChildren(self, currentNode):
+        currentNode.parent.left = currentNode.right
+        currentNode.right.parent = currentNode.parent
+        if currentNode.red is False:
+            if currentNode.right.red:
+                currentNode.right.red = False
+        else:
+            brother = currentNode.parent.right
+            if brother.red == False:
+                if brother.left.red and brother.right.red:
+                    brother.right.red = False
+                    self.left_rotate(brother.parent)
+                elif brother.left.red and brother.right.red == False:
+                    brother.left.red = False
+                    brother.red = True
+                    self.right_rotate(brother)
+                    self.left_rotate(brother.parent.parent)
+                elif brother.right.red and brother.left.red == False:
+                    brother.right.red = False
+                    self.left_rotate(brother.parent)
+            else:
+                if brother.left.key is not None and brother.right.key is not None:
+                    brother.red = False
+                    brother.left.red = True
+                    self.left_rotate(brother.parent)
+
+    def delete_left_node_onlyLeftChildren(self, currentNode):
+        currentNode.parent.left = currentNode.left
+        currentNode.left.parent = currentNode.parent
+        if currentNode.red is False:
+            if currentNode.left.red:
+                currentNode.left.red = False
 
 
