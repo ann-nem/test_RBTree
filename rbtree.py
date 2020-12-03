@@ -319,23 +319,4 @@ class RBtree(Node):
         else:
             next.red = False
 
-    #удаление узлов дерева
-    def test_Delete(self):
-        tree = RBtree()
-        tree.insert(20)
-        tree.insert(15)
-        tree.insert(25)
-        tree.insert(23)
-        tree.insert(27)
-        self.assertEqual(tree.root.red, False)
-        self.assertEqual(tree.root.right.key, 25)
-        self.assertEqual(tree.root.right.left.key, 23)
-        self.assertEquals(tree.root.right.left.red, True)
-        tree.deleteNode(25)
-        self.assertEqual(tree.root.key, 20)
-        self.assertEqual(tree.root.right.key, 27)
-        self.assertEqual(tree.root.right.red, False)
-        self.assertEqual(tree.root.right.right.key, None)
-        self.assertEqual(tree.root.right.left.key, 23)
-        self.assertEqual(tree.root.right.left.red, True)
 
