@@ -258,6 +258,10 @@ class RBtree(Node):
     def delete_right_node(self, currentNode):
         if currentNode.left.key is None and currentNode.right.key is None:
             self.delete_right_node_noChildren(currentNode)
+        elif currentNode.left.key is None and currentNode.right.key is not None:
+            self.delete_right_node_onlyRightChildren(currentNode)
+        elif currentNode.left.key is not None and currentNode.right.key is None:
+            self.delete_right_node_onlyLeftChildren(currentNode)
 
     def delete_right_node_noChildren(self, currentNode):
         currentNode.parent.right = currentNode.right
@@ -284,3 +288,16 @@ class RBtree(Node):
                     brother.right.red = True
                     self.right_rotate(brother.parent)
 
+    def delete_right_node_onlyRightChildren(self, currentNode):
+        currentNode.parent.right = currentNode.right
+        currentNode.right.parent = currentNode.parent
+        if currentNode.red is False:
+            if currentNode.right.red:
+                currentNode.right.red = False
+
+    def delete_right_node_onlyLeftChildren(self, currentNode):
+        currentNode.parent.right = currentNode.left
+        currentNode.left.parent = currentNode.parent
+        if currentNode.red is False:
+            if currentNode.left.red:
+                currentNode.left.red = False
